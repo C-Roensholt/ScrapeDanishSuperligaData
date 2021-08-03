@@ -7,12 +7,13 @@ from functools import reduce
 
 import scrapers.scrape_team_stats as scraper
 
-
+# Setup url and driver
 url = 'https://superliga.dk/stats/stats-21-22/'
 option = webdriver.ChromeOptions()
 option.binary_location = 'C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe'
 driver = webdriver.Chrome(executable_path='C:/webdrivers/chromedriver.exe', options=option)
 
+# Get all team stats
 team_stats = scraper.get_all_team_stats(driver, url)
 
 # add playing round

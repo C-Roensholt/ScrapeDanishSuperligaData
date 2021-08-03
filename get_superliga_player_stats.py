@@ -6,20 +6,24 @@ from selenium import webdriver
 from functools import reduce
 
 import scrapers.scrape_player_stats as scraper
-
+#%%
+# Setup url and driver
 url = 'https://superliga.dk/stats/stats-21-22/'
 option = webdriver.ChromeOptions()
 option.binary_location = 'C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe'
 driver = webdriver.Chrome(executable_path='C:/webdrivers/chromedriver.exe', options=option)
 
-player_stats = scraper.get_all_player_stats(driver, url)
+# Get player and keeper stats
+player_stats, keeper_stats = scraper.get_all_player_stats(driver, url)
 
+# Add gameweek and save as csv
 gameweek = input('Enter gameweek: ')
 player_stats['gameweek'] = gameweek
+keeper_stats['gameweek'] = gameweek
 player_stats.to_csv(f'data/player_stats.csv', mode='a', header=False)
+keeper_stats.to_csv(f'data/keeper_stats.csv', mode='a', header=False)
 
 
-exit()
 #%%
 # ------- Secure/stupid way to get all player stats ---------- #
 url = 'https://superliga.dk/stats/stats-21-22/'
@@ -84,4 +88,6 @@ df_player_final = df_player_final[~df_player_final['player'].isin(df_goalkeeper_
 # add playing round and write to csv
 gameweek = input('Enter gameweek: ')
 df_player_final['gameweek'] = gameweek
+df_goalkeeper_final['gameweek'] = gameweek
 df_player_final.to_csv(f'data/player_stats.csv', mode='a', header=False)
+df_goalkeeper_final.to_csv(f'data/keeper_stats.csv')
